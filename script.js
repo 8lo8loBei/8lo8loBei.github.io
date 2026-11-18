@@ -104,6 +104,7 @@ const photos = [
 
 const photo = document.getElementById('photo');
 const placeholder = document.getElementById('photo-placeholder');
+const photoStatus = document.getElementById('photo-status');
 const orientation = Math.random() < 0.5 ? 'portrait' : 'landscape';
 document.getElementById('profile').dataset.galleryOrientation = orientation;
 const order = photos.filter(photo => photo.orientation === orientation);
@@ -140,6 +141,15 @@ if (order.length) {
   });
   showPhoto(0);
 }
+
+document.querySelectorAll('[data-photo-step]').forEach(button => {
+  button.disabled = order.length < 2;
+  button.addEventListener('click', () => {
+    showPhoto(position + Number(button.dataset.photoStep));
+    photoStatus.textContent = `Photo ${position + 1} of ${order.length}`;
+    restartTimer();
+  });
+});
 
 if (autoplay) {
   document.addEventListener('visibilitychange', restartTimer);

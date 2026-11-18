@@ -177,6 +177,14 @@ button:hover { background: var(--tint); border-color: var(--accent); }
   --frame-height: 3;
 }
 .gallery { margin: 0; min-width: 0; }
+.gallery-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
 .photo-frame {
   position: relative;
   display: grid;
@@ -255,6 +263,26 @@ h1 { margin-block: .38rem .24rem; font-size: clamp(2.05rem, 4.4vw, 3.3rem); lett
   background-size: 137.50000% 105.37634%;
   background-position: 78.33333% 40.00000%;
 }
+button.nameplate-photo-control {
+  position: relative;
+  padding: 0;
+  border: 0;
+  border-radius: .6rem;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+.nameplate-photo-control::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 50%;
+  width: max(100%, 44px);
+  transform: translateX(-50%);
+}
+.nameplate-photo-control:disabled { cursor: default; }
+@media (hover: hover) {
+  .nameplate-photo-control:enabled:hover .botanical-art { filter: saturate(1.35) contrast(1.08); }
+}
+.nameplate-photo-control:enabled:active .botanical-art { filter: brightness(.9); }
 .nameplate-lily { grid-area: lily; width: clamp(2.4rem, 5.15vw, 3.15rem); }
 .nameplate-stars { grid-area: stars; width: clamp(1.85rem, 4.4vw, 2.8rem); justify-self: end; align-self: end; }
 .nameplate-hyacinth { grid-area: hyacinth; width: clamp(2.15rem, 4.65vw, 3rem); align-self: start; justify-self: end; }

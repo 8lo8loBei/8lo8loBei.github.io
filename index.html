@@ -133,12 +133,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             Photos to be added
           </p>
         </div>
+        <p class="gallery-status" id="photo-status" role="status"></p>
       </figure>
       <div>
         <div class="nameplate">
-          <span class="botanical-art botanical-lily nameplate-art nameplate-lily" aria-hidden="true"></span>
+          <button class="nameplate-photo-control nameplate-lily" type="button" data-photo-step="-1"
+                  aria-label="Previous photo" aria-controls="photo" title="Previous photo" disabled>
+            <span class="botanical-art botanical-lily nameplate-art" aria-hidden="true"></span>
+          </button>
           <span class="watercolor watercolor-stars nameplate-art nameplate-stars" aria-hidden="true"></span>
-          <span class="botanical-art botanical-hyacinth nameplate-art nameplate-hyacinth" aria-hidden="true"></span>
+          <button class="nameplate-photo-control nameplate-hyacinth" type="button" data-photo-step="1"
+                  aria-label="Next photo" aria-controls="photo" title="Next photo" disabled>
+            <span class="botanical-art botanical-hyacinth nameplate-art" aria-hidden="true"></span>
+          </button>
           <h1 id="name">Beier Xiao <span class="name-zh" lang="zh-CN">肖贝儿</span></h1>
         </div>
         <p class="intro">
