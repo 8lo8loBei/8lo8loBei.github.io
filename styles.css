@@ -166,7 +166,7 @@ button:hover { background: var(--tint); border-color: var(--accent); }
   --frame-width: 3;
   --frame-height: 4;
   display: grid;
-  grid-template-columns: minmax(0, var(--gallery-width)) minmax(0, 1fr);
+  grid-template-columns: minmax(0, min(var(--gallery-width), 33%)) minmax(0, 1fr);
   gap: clamp(1.55rem, 4.5vw, 2.8rem);
   align-items: start;
   padding-block: clamp(1.8rem, 4vw, 2.85rem) clamp(1.6rem, 3.8vw, 2.4rem);
@@ -490,19 +490,44 @@ h3 { font-size: clamp(1.23rem, 2.25vw, 1.52rem); letter-spacing: -.014em; line-h
 .footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .65rem 2rem; border-top: 1px solid var(--line); padding-block: 1.35rem 2rem; color: var(--muted); font-size: .83rem; }
 .footer-meta { display: flex; flex-wrap: wrap; gap: .2rem 1.1rem; }
 @media (max-width: 42rem) {
-  .profile, .paper { grid-template-columns: minmax(0, 1fr); }
+  .profile {
+    gap: clamp(1rem, 3vw, 1.5rem);
+    padding-block: 1.2rem 1.45rem;
+  }
+  .paper { grid-template-columns: minmax(0, 1fr); }
   .paper-figure { width: min(100%, 26rem); }
   .paper-figure > button { position: relative; inset: auto; height: auto; aspect-ratio: 3 / 2; }
-  .gallery { width: min(100%, var(--gallery-width)); }
+  .entry .links { gap: 0 1.2rem; }
+  .entry .links a { display: inline-flex; align-items: center; min-height: 44px; }
+  .entry .links a > span { margin-inline-start: .3em; }
+  .figure-preview button { min-height: 44px; }
   .research {
     grid-template-areas: "title title" "work work" "pond bear";
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .research > .bear-scene { align-self: start; margin-top: 1.45rem; }
 }
+@media (max-width: 32rem) {
+  .profile { grid-template-columns: minmax(0, 1fr); }
+  .gallery { width: min(100%, clamp(10rem, 44vw, 12rem)); justify-self: center; }
+  .profile[data-gallery-orientation="landscape"] .gallery { width: min(100%, clamp(13rem, 59vw, 16rem)); }
+  .nameplate { display: grid; width: fit-content; margin-inline: auto; }
+  .timeline-row { grid-template-columns: minmax(0, 1fr); row-gap: .1rem; }
+  .timeline-date { text-align: start; white-space: normal; }
+}
 @media (max-width: 28rem) {
   .frame { width: calc(100% - 2rem); }
-  .primary-nav { gap: .35rem .75rem; }
+  .header { gap: .35rem; padding-block: .65rem .35rem; }
+  .primary-nav { width: 100%; justify-content: center; align-items: stretch; gap: 0; line-height: 1.25; }
+  .primary-nav > a {
+    display: grid;
+    place-items: center;
+    flex: 0 0 33%;
+    min-width: max-content;
+    min-height: 44px;
+    padding-inline: .15rem;
+    text-align: center;
+  }
   .nameplate h1 { font-size: clamp(1.9rem, 7.5vw, 2.32rem); }
 }
 @media (prefers-reduced-motion: reduce) {
