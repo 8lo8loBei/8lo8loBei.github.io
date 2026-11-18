@@ -102,7 +102,8 @@ const photos = [
   }
 ];
 
-const photo = document.getElementById('photo');
+let photo = document.getElementById('photo');
+let pendingPhoto;
 const placeholder = document.getElementById('photo-placeholder');
 const photoStatus = document.getElementById('photo-status');
 const orientation = Math.random() < 0.5 ? 'portrait' : 'landscape';
@@ -117,12 +118,33 @@ for (let index = order.length - 1; index > 0; index--) {
   [order[index], order[other]] = [order[other], order[index]];
 }
 
-function showPhoto(index) {
-  position = (index + order.length) % order.length;
-  const currentPhoto = order[position];
-  photo.classList.toggle('rotated-left', currentPhoto.rotateLeft === true);
-  photo.src = currentPhoto.src;
-  photo.alt = currentPhoto.alt;
+async function showPhoto(index, announce = false) {
+  const nextPosition = (index + order.length) % order.length;
+  position = nextPosition;
+  const slide = order[nextPosition];
+  const nextPhoto = new Image();
+  nextPhoto.alt = slide.alt;
+  nextPhoto.classList.toggle('rotated-left', slide.rotateLeft === true);
+  pendingPhoto = nextPhoto;
+  nextPhoto.src = slide.src;
+
+  try {
+    await nextPhoto.decode();
+  } catch {
+    if (pendingPhoto === nextPhoto) {
+      photo.hidden = true;
+      placeholder.hidden = false;
+      if (announce) photoStatus.textContent = 'Photo unavailable.';
+    }
+    return;
+  }
+
+  if (pendingPhoto !== nextPhoto) return;
+  nextPhoto.id = photo.id;
+  photo.replaceWith(nextPhoto);
+  photo = nextPhoto;
+  placeholder.hidden = true;
+  if (announce) photoStatus.textContent = `Photo ${nextPosition + 1} of ${order.length}`;
 }
 
 function restartTimer() {
@@ -130,23 +152,12 @@ function restartTimer() {
   if (autoplay && !document.hidden) timer = window.setInterval(() => showPhoto(position + 1), 4800);
 }
 
-if (order.length) {
-  photo.addEventListener('load', () => {
-    photo.hidden = false;
-    placeholder.hidden = true;
-  });
-  photo.addEventListener('error', () => {
-    photo.hidden = true;
-    placeholder.hidden = false;
-  });
-  showPhoto(0);
-}
+if (order.length) showPhoto(0);
 
 document.querySelectorAll('[data-photo-step]').forEach(button => {
   button.disabled = order.length < 2;
   button.addEventListener('click', () => {
-    showPhoto(position + Number(button.dataset.photoStep));
-    photoStatus.textContent = `Photo ${position + 1} of ${order.length}`;
+    showPhoto(position + Number(button.dataset.photoStep), true);
     restartTimer();
   });
 });
